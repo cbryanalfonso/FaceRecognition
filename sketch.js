@@ -13,6 +13,8 @@ This example uses p5 preload function to create the classifier
 let classifier;
 // Model URL
 let imageModelURL = 'https://teachablemachine.withgoogle.com/models/BlP1OZ89F/';
+//El modelo de abiajo es mio
+//let imageModelURL = 'https://teachablemachine.withgoogle.com/models/1DIzlEoZs/'
 
 // Video
 let video;
@@ -35,45 +37,42 @@ function setup() {
   flippedVideo = ml5.flipImage(video)
   // Start classifying
   classifyVideo();
-  whoFunction();
+  //whoFunction();
 }
 
 function draw() {
-  background(0);
+  background('black');
   // Draw the video
   image(flippedVideo, 0, 0);
 
   // Draw the label
-  fill('red');
-  textSize(70);
+  fill('white');
+  textSize(30);
   textAlign(CENTER);
   text(label, width / 2, height - 4);
+  
 }
 
-// Get a prediction for the current video frame
 function classifyVideo() {
   flippedVideo = ml5.flipImage(video)
   classifier.classify(flippedVideo, gotResult);
 }
 
-// When we get a result
 function gotResult(error, results) {
-  // If there is an error
   if (error) {
     console.error(error);
     return;
   }
   // The results are in an array ordered by confidence.
-  // console.log(results[0]);
-  label = results[0].label;
+  //console.log(results[0]);
+  if(results[0].label === 'Wrong: No Mask'){
+    let resultadosNew = 'No esta usando mascarilla el bro';
+    label = resultadosNew;
+  }else{
+    let resultadosNew = 'Esta usando mascarilla bien hecho my king';
+    label = resultadosNew;
+  }
+  //label = results[0].label;
   // Classifiy again!
   classifyVideo();
-}
-
-function whoFunction() {
-  var x = document.createElement("IFRAME");
-  x.setAttribute("src", "https://www.who.int/emergencies/diseases/novel-coronavirus-2019/advice-for-public/when-and-how-to-use-masks");
-  x.style.width = '640px';
-  x.style.height = '520'
-  document.body.appendChild(x);
 }
